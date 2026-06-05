@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_text_field.dart';
-import '../../../../core/router/app_router.dart';
+import '../../../../shared/theme/app_colors.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -58,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuario registrado exitosamente')),
       );
-      context.go(AppRouter.login);
+      Navigator.pop(context);
     }
   }
 
@@ -72,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFEEEAFF), Color(0xFFF5F3FF), Color(0xFFFFFFFF)],
+            colors: [AppColors.backgroundLight, AppColors.background, AppColors.white],
           ),
         ),
         child: SafeArea(
@@ -91,20 +90,20 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       Align(
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
-                          onTap: () => context.go(AppRouter.login),
+                          onTap: () => Navigator.pop(context),
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColors.white,
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.deepPurple.withOpacity(0.1),
+                                  color: AppColors.primary.withOpacity(0.1),
                                   blurRadius: 8,
                                 ),
                               ],
                             ),
-                            child: const Icon(Icons.arrow_back, color: Color(0xFF6C63FF)),
+                            child: const Icon(Icons.arrow_back, color: AppColors.primary),
                           ),
                         ),
                       ),
@@ -112,17 +111,17 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.white,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.deepPurple.withOpacity(0.15),
+                              color: AppColors.primary.withOpacity(0.15),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.person_add, size: 60, color: Color(0xFF6C63FF)),
+                        child: const Icon(Icons.person_add, size: 60, color: AppColors.primary),
                       ),
                       const SizedBox(height: 24),
                       const Text(
@@ -134,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       const Text(
                         'Completa tus datos para registrarte',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        style: TextStyle(fontSize: 14, color: AppColors.hint),
                       ),
                       const SizedBox(height: 24),
                       AuthTextField(
@@ -159,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       if (authProvider.error != null)
                         Text(
                           authProvider.error!,
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppColors.error),
                           textAlign: TextAlign.center,
                         ),
                       const SizedBox(height: 16),
@@ -174,11 +173,11 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                         children: [
                           const Text('¿Ya tienes cuenta? '),
                           GestureDetector(
-                            onTap: () => context.go(AppRouter.login),
+                            onTap: () => Navigator.pop(context),
                             child: const Text(
                               'Inicia sesión',
                               style: TextStyle(
-                                color: Color(0xFF6C63FF),
+                                color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

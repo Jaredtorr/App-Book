@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../domain/entities/book_entity.dart';
 import '../../data/models/book_model.dart';
+import '../../../../shared/theme/app_colors.dart';
+import '../../../../core/constants/api_constants.dart';
 
 class BookForm extends StatefulWidget {
   final BookEntity? book;
@@ -67,7 +69,7 @@ class _BookFormState extends State<BookForm> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F3FF),
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextField(
@@ -75,13 +77,13 @@ class _BookFormState extends State<BookForm> {
         keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(icon, color: const Color(0xFF6C63FF), size: 20),
+          prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: const Color(0xFFF5F3FF),
+          fillColor: AppColors.background,
         ),
       ),
     );
@@ -92,15 +94,14 @@ class _BookFormState extends State<BookForm> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Selector de imagen
         GestureDetector(
           onTap: _pickImage,
           child: Container(
             height: 120,
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F3FF),
+              color: AppColors.background,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF6C63FF), width: 1.5),
+              border: Border.all(color: AppColors.primary, width: 1.5),
             ),
             child: _selectedImage != null
                 ? ClipRRect(
@@ -111,11 +112,11 @@ class _BookFormState extends State<BookForm> {
                 ? ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                'http://192.168.0.36:3000/${widget.book!.imageUrl}',
+                '${ApiConstants.baseUrl}/${widget.book!.imageUrl}',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.add_photo_alternate_outlined,
-                  color: Color(0xFF6C63FF),
+                  color: AppColors.primary,
                   size: 40,
                 ),
               ),
@@ -124,10 +125,10 @@ class _BookFormState extends State<BookForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.add_photo_alternate_outlined,
-                    color: Color(0xFF6C63FF), size: 40),
+                    color: AppColors.primary, size: 40),
                 SizedBox(height: 8),
                 Text('Agregar portada',
-                    style: TextStyle(color: Color(0xFF6C63FF))),
+                    style: TextStyle(color: AppColors.primary)),
               ],
             ),
           ),
@@ -177,11 +178,11 @@ class _BookFormState extends State<BookForm> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             gradient: const LinearGradient(
-              colors: [Color(0xFF6C63FF), Color(0xFF9C8FFF)],
+              colors: [AppColors.primary, AppColors.primaryLight],
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF6C63FF).withOpacity(0.4),
+                color: AppColors.primary.withOpacity(0.4),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -201,8 +202,8 @@ class _BookFormState extends State<BookForm> {
               widget.onSubmit(book, _selectedImage);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
+              backgroundColor: AppColors.transparent,
+              shadowColor: AppColors.transparent,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -213,7 +214,7 @@ class _BookFormState extends State<BookForm> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppColors.white,
               ),
             ),
           ),

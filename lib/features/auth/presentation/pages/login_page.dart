@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/auth_text_field.dart';
-import '../../../../core/router/app_router.dart';
+import '../../../../features/books/presentation/pages/book_page.dart';
+import '../../../../shared/theme/app_colors.dart';
+import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -51,11 +52,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       _passwordController.text.trim(),
     );
     if (success && mounted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go(AppRouter.books);
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BookPage()),
+      );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
@@ -66,7 +69,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFEEEAFF), Color(0xFFF5F3FF), Color(0xFFFFFFFF)],
+            colors: [AppColors.backgroundLight, AppColors.background, AppColors.white],
           ),
         ),
         child: SafeArea(
@@ -85,17 +88,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.white,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.deepPurple.withOpacity(0.15),
+                              color: AppColors.primary.withOpacity(0.15),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.menu_book, size: 60, color: Color(0xFF6C63FF)),
+                        child: const Icon(Icons.menu_book, size: 60, color: AppColors.primary),
                       ),
                       const SizedBox(height: 32),
                       const Text(
@@ -107,7 +110,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       const Text(
                         'Inicia sesión en tu cuenta',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        style: TextStyle(fontSize: 14, color: AppColors.hint),
                       ),
                       const SizedBox(height: 32),
                       AuthTextField(
@@ -126,7 +129,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       if (authProvider.error != null)
                         Text(
                           authProvider.error!,
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: AppColors.error),
                           textAlign: TextAlign.center,
                         ),
                       const SizedBox(height: 16),
@@ -141,11 +144,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         children: [
                           const Text('¿No tienes cuenta? '),
                           GestureDetector(
-                            onTap: () => context.go(AppRouter.register),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const RegisterPage()),
+                            ),
                             child: const Text(
                               'Regístrate',
                               style: TextStyle(
-                                color: Color(0xFF6C63FF),
+                                color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

@@ -28,9 +28,9 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      print('🔐 Intentando login con: $email');
+      print(' Intentando login con: $email');
       final result = await loginUseCase.call(LoginParams(email: email, password: password));
-      print('✅ Resultado: $result');
+      print(' Resultado: $result');
       final parts = result.split('|');
       _token = parts[0];
       _name = parts.length > 1 ? parts[1] : 'Usuario';
@@ -38,7 +38,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      print('❌ Error: $e');
+      print(' Error: $e');
       _error = e.toString();
       _isLoading = false;
       notifyListeners();

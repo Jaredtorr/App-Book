@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../shared/theme/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
   final String label;
@@ -18,11 +19,11 @@ class AuthTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.deepPurple.withOpacity(0.08),
+            color: AppColors.primary.withOpacity(0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -33,13 +34,13 @@ class AuthTextField extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(icon, color: const Color(0xFF6C63FF)),
+          prefixIcon: Icon(icon, color: AppColors.primary),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: AppColors.white,
         ),
       ),
     );

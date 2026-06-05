@@ -16,7 +16,7 @@ class InjectionContainer {
 
   static final httpClient = HttpClient();
 
-  // Auth
+
   static final authDataSource = AuthRemoteDataSourceImpl(httpClient);
   static final authRepository = AuthRepositoryImpl(authDataSource);
   static final loginUseCase = LoginUseCase(authRepository);

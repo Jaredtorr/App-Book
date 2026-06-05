@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../provider/book_provider.dart';
 import '../widgets/book_card.dart';
 import '../widgets/book_form.dart';
+import '../widgets/wave_clipper.dart';
+import '../widgets/stat_card.dart';
 import '../../domain/entities/book_entity.dart';
 import '../../../../features/auth/presentation/provider/auth_provider.dart';
-import '../../../../core/router/app_router.dart';
+import '../../../../features/auth/presentation/pages/login_page.dart';
+import '../../../../shared/theme/app_colors.dart';
 
 class BookPage extends StatefulWidget {
   const BookPage({super.key});
@@ -50,10 +52,10 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       builder: (context) => Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         padding: EdgeInsets.only(
@@ -72,7 +74,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: AppColors.hint.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -106,10 +108,10 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
   void _deleteBook(int id) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       builder: (context) => Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         padding: const EdgeInsets.all(24),
@@ -119,10 +121,10 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.red[50],
+                color: AppColors.error.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.delete, color: Colors.red, size: 32),
+              child: const Icon(Icons.delete, color: AppColors.error, size: 32),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -132,7 +134,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
             const SizedBox(height: 8),
             const Text(
               'Esta acción no se puede deshacer.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: AppColors.hint),
             ),
             const SizedBox(height: 24),
             Row(
@@ -158,13 +160,13 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                       if (mounted) Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColors.error,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+                    child: const Text('Eliminar', style: TextStyle(color: AppColors.white)),
                   ),
                 ),
               ],
@@ -185,11 +187,11 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
     ).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F3FF),
+      backgroundColor: AppColors.background,
       body: Stack(
         children: [
           ClipPath(
-            clipper: _WaveClipper(),
+            clipper: WaveClipper(),
             child: Container(
               height: 220,
               decoration: const BoxDecoration(
@@ -197,9 +199,9 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF6C63FF),
-                    Color(0xFF8B5CF6),
-                    Color(0xFFA78BFA),
+                    AppColors.primary,
+                    AppColors.primaryLight,
+                    AppColors.primaryLighter,
                   ],
                 ),
               ),
@@ -221,20 +223,23 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: AppColors.white,
                             ),
                           ),
                           const Text(
                             'Descubre, organiza y disfruta tus libros',
-                            style: TextStyle(color: Colors.white70, fontSize: 13),
+                            style: TextStyle(color: AppColors.white70, fontSize: 13),
                           ),
                         ],
                       ),
                       IconButton(
-                        icon: const Icon(Icons.logout, color: Colors.white),
+                        icon: const Icon(Icons.logout, color: AppColors.white),
                         onPressed: () {
                           authProvider.logout();
-                          context.go(AppRouter.login);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => const LoginPage()),
+                          );
                         },
                       ),
                     ],
@@ -245,11 +250,11 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.deepPurple.withOpacity(0.08),
+                          color: AppColors.primary.withOpacity(0.08),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -260,7 +265,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                       onChanged: (value) => setState(() => _searchQuery = value),
                       decoration: const InputDecoration(
                         hintText: 'Buscar libro, autor o género...',
-                        prefixIcon: Icon(Icons.search, color: Color(0xFF6C63FF)),
+                        prefixIcon: Icon(Icons.search, color: AppColors.primary),
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 16),
                       ),
@@ -273,7 +278,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                   child: Row(
                     children: [
                       Expanded(
-                        child: _StatCard(
+                        child: StatCard(
                           icon: Icons.menu_book,
                           title: 'Total de libros',
                           value: '${bookProvider.books.length}',
@@ -282,7 +287,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _StatCard(
+                        child: StatCard(
                           icon: Icons.bookmark,
                           title: 'Géneros',
                           value: '${bookProvider.books.map((b) => b.genre).toSet().length}',
@@ -304,7 +309,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                       ),
                       Text(
                         '${filteredBooks.length} libros',
-                        style: const TextStyle(color: Colors.grey, fontSize: 13),
+                        style: const TextStyle(color: AppColors.hint, fontSize: 13),
                       ),
                     ],
                   ),
@@ -312,7 +317,7 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
                 const SizedBox(height: 8),
                 Expanded(
                   child: bookProvider.isLoading
-                      ? const Center(child: CircularProgressIndicator(color: Color(0xFF6C63FF)))
+                      ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
                       : FadeTransition(
                     opacity: _animationController.status == AnimationStatus.dismissed
                         ? const AlwaysStoppedAnimation(1.0)
@@ -340,83 +345,8 @@ class _BookPageState extends State<BookPage> with SingleTickerProviderStateMixin
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showBookDialog(),
-        backgroundColor: const Color(0xFF6C63FF),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-    );
-  }
-}
-
-class _WaveClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.lineTo(0, size.height - 40);
-    path.quadraticBezierTo(
-      size.width * 0.25, size.height,
-      size.width * 0.5, size.height - 20,
-    );
-    path.quadraticBezierTo(
-      size.width * 0.75, size.height - 40,
-      size.width, size.height - 10,
-    );
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(_WaveClipper oldClipper) => false;
-}
-
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String value;
-  final String subtitle;
-
-  const _StatCard({
-    required this.icon,
-    required this.title,
-    required this.value,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.deepPurple.withOpacity(0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEEEAFF),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: const Color(0xFF6C63FF), size: 20),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(title, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-              Text(subtitle, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-            ],
-          ),
-        ],
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.add, color: AppColors.white),
       ),
     );
   }
